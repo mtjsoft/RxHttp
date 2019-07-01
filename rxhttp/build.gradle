@@ -1,0 +1,43 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.mtjsoft'
+
+android {
+    compileSdkVersion 27
+
+
+
+    defaultConfig {
+        minSdkVersion 19
+        //targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //rxlifecycle2
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.2.2'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.2'
+    //rxandroid & rxjava2
+    compile 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.2.8'
+    //网络请求框架retrofit2
+    compile 'com.squareup.retrofit2:retrofit:2.5.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.4.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+}
