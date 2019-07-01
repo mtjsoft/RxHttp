@@ -35,6 +35,7 @@ public class TestActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+	
         //网络请求
 	//参数map
         Map<String, Object> map = new HashMap<>();
@@ -62,8 +63,10 @@ public class TestActivity extends RxAppCompatActivity {
                     }
                 });
 		
+		
         //上传文件
 	//fileList多文件上传
+	
         List<File> fileList = new ArrayList<>();
 	String file = "file";
         HttpRxObservable.getObservable(ApiUtil.instance().uploadFileObservable("/upload", map, header, file, fileList), this, ActivityEvent.DESTROY)
@@ -85,6 +88,7 @@ public class TestActivity extends RxAppCompatActivity {
                 });
 		
         //下载文件实例
+	
 	String destDir = "保存地址";
         String fileName = "文件名称.apk";
         FileDownloader.downloadFile2(DownloadApiUtil.instance().downloadApkFile("/download", null), this, destDir, fileName,
@@ -107,7 +111,7 @@ public class TestActivity extends RxAppCompatActivity {
     }
 }
 ```
-### HttpResponse,http响应参数实体类
+### HttpResponse,http响应参数实体类（实体类无法满足需要，就在源码里修改吧）
 ```
 /**
  * http响应参数实体类
