@@ -17,40 +17,37 @@ dependencies {
 	}
 ```
 # 实例TestActivity（Fragment一样的用法）：
+
+### 可在Application中设置bascUrl
 ```
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+  public class MyApp extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        RetrofitUtils.get().setBaseApi("https://www.baidu.com/");
+    }
+}
+```
 
-import com.example.rxhttp.Api.ApiUtil;
-import com.example.rxhttp.ExceptionManage.ApiException;
-import com.example.rxhttp.Model.HttpResponse;
-import com.example.rxhttp.Utils.HttpRxObservable;
-import com.example.rxhttp.Utils.HttpRxObserver;
-import com.example.rxhttp.download.DownloadApiUtil;
-import com.example.rxhttp.download.DownloadProgressHandler;
-import com.example.rxhttp.download.FileDownloader;
-import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import io.reactivex.disposables.Disposable;
-
+```
 public class TestActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //get/post请求
+        //网络请求
+	//参数map
         Map<String, Object> map = new HashMap<>();
-        HttpRxObservable.getObservable(ApiUtil.instance().apiObservable("", ApiUtil.GET, map, map), this, ActivityEvent.DESTROY)
+        //请求头header
+        Map<String, Object> header = new HashMap<>();
+	
+	//ActivityEvent.DESTROY，感知界面销毁时，取消订阅（FragmentEvent.DESTROY自行设置）
+	//ApiUtil.GET、ApiUtil.POST自行设置
+	
+        HttpRxObservable.getObservable(ApiUtil.instance().apiObservable("/login", ApiUtil.POST, map, header), this, ActivityEvent.DESTROY)
                 .subscribe(new HttpRxObserver<HttpResponse>() {
                     @Override
                     public void onStart(Disposable d) {
-                        //开启loding
+                        //请求开始，可用于开启loding
                     }
 
                     @Override
@@ -63,13 +60,16 @@ public class TestActivity extends RxAppCompatActivity {
                         //成功
                     }
                 });
+		
         //上传文件
+	//fileList多文件上传
         List<File> fileList = new ArrayList<>();
-        HttpRxObservable.getObservable(ApiUtil.instance().uploadFileObservable("", map, map, "", fileList), this, ActivityEvent.DESTROY)
+	String file = "file";
+        HttpRxObservable.getObservable(ApiUtil.instance().uploadFileObservable("/upload", map, header, file, fileList), this, ActivityEvent.DESTROY)
                 .subscribe(new HttpRxObserver<HttpResponse>() {
                     @Override
                     public void onStart(Disposable d) {
-                        //开启loding
+                        //请求开始，可用于开启loding
                     }
 
                     @Override
@@ -82,22 +82,25 @@ public class TestActivity extends RxAppCompatActivity {
                         //成功
                     }
                 });
+		
         //下载文件实例
-        FileDownloader.downloadFile2(DownloadApiUtil.instance().downloadApkFile("", null), this, "", "",
+	String destDir = "保存地址";
+        String fileName = "文件名称.apk";
+        FileDownloader.downloadFile2(DownloadApiUtil.instance().downloadApkFile("/download", null), this, destDir, fileName,
                 new DownloadProgressHandler() {
                     @Override
                     public void onProgress(int progress, long total, long speed) {
-
+		         // 下载进度、大小...（可用于更新进度条）
                     }
 
                     @Override
                     public void onCompleted(File file) {
-
+                        // 下载完成
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                       // 下载错误，失败
                     }
                 });
     }
