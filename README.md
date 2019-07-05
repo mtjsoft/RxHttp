@@ -16,9 +16,9 @@ dependencies {
 	        implementation 'com.github.mtjsoft:RxHttp:v1.0'
 	}
 ```
-# 使用方法（Fragment一样的用法）：
+# 3、使用方法：
 
-### 可在Application中设置bascUrl
+### 3.1、可在Application中设置bascUrl
 ```
   public class MyApp extends Application {
     @Override
@@ -28,7 +28,7 @@ dependencies {
     }
 }
 ```
-### Activity实例
+### 3.2、Activity继承RxAppCompatActivity（Fragment一样的用法，只需继承RxFragment）
 
 ```
 public class TestActivity extends RxAppCompatActivity {
@@ -111,7 +111,7 @@ public class TestActivity extends RxAppCompatActivity {
     }
 }
 ```
-### HttpResponse,http响应参数实体类（实体类无法满足需要，就在源码里修改吧）
+# 4、HttpResponse,http响应参数实体类（实体类无法满足需要，就在源码里修改吧）
 ```
 /**
  * http响应参数实体类
